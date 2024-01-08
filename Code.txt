@@ -1,0 +1,110 @@
+import sys
+
+def main():
+    jug1 = int(input("Capacity of jug 1: "))
+    jug2 = int(input("Capacity of jug 2: "))
+    goal = int(input("Amount of water to be measured: "))
+
+    def apply_rule(ch, x, y):
+
+        # Rule 1:Fill jug 1
+        if ch == 1:
+
+            if x < jug1:
+                return jug1, y
+            else:
+                print("==============================================================")
+                print("Rule cannot be applied")
+                return x, y
+
+
+        # Rule 2:Fill jug 2
+        if ch == 2:
+            if y < jug2:
+                 return x, jug2
+            else:
+                print("==============================================================")
+                print("Rule cannot be applied")
+                return x, y
+
+
+        # Rule 3:Transfer water from jug 1 to jug 2
+        if ch == 3:
+            if x > 0 and x + y >= jug2:
+                return x - (jug2 - y), jug2
+
+            elif x > 0 and x + y <=jug2:
+                return 0 , x + y
+
+            else:
+                print("==============================================================")
+                print("Rule cannot be applied")
+                return x, y
+
+        # Rule 4:Transfer water from jug 2 to jug 1
+        if ch == 4:
+            if y > 0 and x + y <= jug1:
+                 return x + y, 0
+
+            elif y > 0 and x + y >= jug1:
+                return jug1, y-(jug1-x)
+
+            else:
+                print("==============================================================")
+                print("Rule cannot be applied")
+                return x, y
+
+        # Rule 5:empty jug 1
+        if ch == 5:
+            if x > 0:
+                return 0, y
+
+            else:
+                print("==============================================================")
+                print("Rule cannot be applied")
+                return x, y
+
+        # Rule 6:empty jug 2
+        if ch == 6:
+            if y > 0:
+                return x, 0
+
+            else:
+                print("==============================================================")
+                print("Rule cannot be applied")
+                return x, y
+
+
+    x = y = 0
+    while (True):
+        if (x == goal) or (y == goal):
+            print('GOAL ACHIEVED!')
+            break
+        else:
+            print("================================RULES==============================")
+            print("Rule 1: Fill jug 1")
+            print("Rule 2: Fill jug 2")
+            print("Rule 3: Transfer water from jug 1 to jug 2")
+            print("Rule 4: Transfer water from jug 2 to jug 1")
+            print("Rule 5: Empty jug 1")
+            print("Rule 6: Empty jug 2")
+            print("0: Exit the program")
+            print("9: Restart the program")
+
+            ch = int(input("Enter rule to apply: "))
+            if 0< ch >6 and ch!=9:
+                print("==============================================================")
+                print("INVALID CHOICE")
+                continue
+            elif ch==0:
+                sys.exit()
+            elif ch==9:
+                print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+                main()
+            else:
+                x, y = apply_rule(ch, x, y)
+                print("================================STATUS=========================== ")
+                print("CURRENT STATE:", end=" ")
+                print((jug1,x),(jug2,y))
+
+main()
